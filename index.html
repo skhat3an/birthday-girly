@@ -244,8 +244,8 @@
       <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
     </div>
     <span class="big-emoji">🎀</span>
-    <div class="big-title">Who knows her best?</div>
-    <div class="subtitle">The ultimate birthday girl quiz!</div>
+    <div class="big-title">Who knows Saja best?</div>
+    <div class="subtitle">The ultimate birthday girlie quiz!</div>
     <br>
     <input class="name-input" type="text" id="player-name" placeholder="Your name (e.g. Sarah)" maxlength="20" />
     <br>
@@ -292,6 +292,11 @@ const QUESTIONS = [
   {
     q: "What's her go-to comfort food?",
     options: ["mandi", "Grape leaves", "Ramen", "pizza"],
+    answer: 0
+  },
+  {
+    q: "What would she chose",
+    options: ["silver", "gold", "rose gold", "yellowish gold"],
     answer: 0
   },
   {
@@ -345,9 +350,14 @@ const QUESTIONS = [
     answer: 3
   },
   {
-    q: "Complete her famous quote: \"photo you - me know - ___ - 3 zinger\"",
+    q: "Her favourite quote is......\"",
     options: ["photo you", "me know", "شكشن", "٣ زنجي لوسمحت "],
     answer: 2
+  },
+  {
+    q: "Who annoys her the most\"",
+    options: ["لولو", "بسكوتة", "زوزو", "هي شخصيا"],
+    answer: 0
   },
   {
     q: "Where did she first choke laughing?",
@@ -428,7 +438,7 @@ function showResults() {
   else if (score >= 9)   { title = '✨ Super Fan';             msg = 'You really know your girl!'; }
   else if (score >= 6)   { title = '💛 Pretty Good Friend';   msg = 'Not bad! Room to level up.'; }
   else if (score >= 3)   { title = '🌸 Casual Acquaintance';  msg = 'More brunch dates needed...'; }
-  else                   { title = '👀 Total Stranger';        msg = 'Have you two actually met? 😅'; }
+  else                   { title = '👀 Who are you stranger';        msg = 'Have you two actually met? 😅'; }
   document.getElementById('title-display').textContent = title;
   document.getElementById('result-msg').textContent = msg;
   showScreen('screen-result');
