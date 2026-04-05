@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Who Knows Her Best? 🎀</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #fff0f5 0%, #fce4ec 50%, #f8bbd0 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 28px;
+      box-shadow: 0 8px 40px rgba(212, 83, 126, 0.15), 0 2px 8px rgba(0,0,0,0.06);
+      padding: 2.5rem 2rem;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle, #fce4ec 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .confetti-row {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 1rem;
+    }
+    .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      animation: bounce 1.4s ease-in-out infinite;
+    }
+    .dot:nth-child(1) { background: #F4C0D1; animation-delay: 0s; }
+    .dot:nth-child(2) { background: #FAC775; animation-delay: 0.15s; }
+    .dot:nth-child(3) { background: #9FE1CB; animation-delay: 0.3s; }
+    .dot:nth-child(4) { background: #ED93B1; animation-delay: 0.45s; }
+    .dot:nth-child(5) { background: #B5D4F4; animation-delay: 0.6s; }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .big-emoji { font-size: 3.5rem; margin-bottom: 0.5rem; display: block; animation: pop 0.5s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .big-title {
+      font-family: 'Pacifico', cursive;
+      font-size: 2rem;
+      color: #D4537E;
+      margin-bottom: 0.4rem;
+      line-height: 1.2;
+    }
+
+    .subtitle { font-size: 1rem; color: #888; margin-bottom: 1.75rem; }
+
+    .name-input {
+      width: 100%;
+      max-width: 280px;
+      border: 2px solid #F4C0D1;
+      border-radius: 50px;
+      padding: 0.7rem 1.25rem;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      text-align: center;
+      outline: none;
+      color: #333;
+      transition: border-color 0.2s;
+      margin-bottom: 1.25rem;
+    }
+    .name-input:focus { border-color: #D4537E; }
+    .name-input::placeholder { color: #C0A0B0; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #F4C0D1, #D4537E);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 0.85rem 2.5rem;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(212,83,126,0.35);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212,83,126,0.45); }
+    .btn-primary:active { transform: scale(0.97); }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #D4537E;
+      border-radius: 50px;
+      padding: 0.7rem 2rem;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #D4537E;
+      cursor: pointer;
+      transition: background 0.18s;
+      margin-top: 0.75rem;
+    }
+    .btn-outline:hover { background: #fff0f5; }
+
+    .progress-wrap {
+      background: #fce4ec;
+      border-radius: 50px;
+      height: 8px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #F4C0D1, #D4537E);
+      border-radius: 50px;
+      transition: width 0.5s ease;
+    }
+
+    .q-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #D4537E;
+      margin-bottom: 0.5rem;
+    }
+
+    .q-text {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.3rem;
+      color: #333;
+      margin-bottom: 1.5rem;
+      line-height: 1.45;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .option-btn {
+      background: #fff;
+      border: 2px solid #F4C0D1;
+      border-radius: 14px;
+      padding: 0.75rem 0.5rem;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #444;
+      cursor: pointer;
+      transition: all 0.18s;
+      line-height: 1.3;
+    }
+    .option-btn:hover { border-color: #D4537E; background: #fff0f5; color: #72243E; transform: translateY(-2px); }
+    .option-btn.correct { background: #EAF3DE; border-color: #639922; color: #3B6D11; }
+    .option-btn.wrong { background: #FCEBEB; border-color: #E24B4A; color: #A32D2D; }
+    .option-btn:disabled { cursor: default; transform: none; }
+
+    .feedback-tag {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border-radius: 50px;
+      padding: 0.25rem 0.9rem;
+      margin-top: 0.5rem;
+    }
+    .feedback-correct { background: #EAF3DE; color: #3B6D11; }
+    .feedback-wrong { background: #FCEBEB; color: #A32D2D; }
+
+    .result-inner {
+      background: #fff0f5;
+      border: 2px solid #F4C0D1;
+      border-radius: 20px;
+      padding: 1.25rem;
+      margin: 0.75rem 0 1.25rem;
+    }
+    .score-label { font-size: 0.9rem; color: #999; }
+    .score-big { font-family: 'Pacifico', cursive; font-size: 3rem; color: #D4537E; margin: 0.35rem 0; }
+    .title-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #F4C0D1, #ED93B1);
+      color: #72243E;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 50px;
+      padding: 0.4rem 1.25rem;
+      margin: 0.5rem 0;
+    }
+    .result-msg { font-size: 0.9rem; color: #888; margin-top: 0.4rem; }
+
+    .lb-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 1rem;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      background: #f9f9f9;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #444;
+      animation: popIn 0.3s ease;
+    }
+    .lb-row.gold { background: #FAEEDA; color: #633806; border: 1.5px solid #FAC775; }
+    .lb-row.silver { background: #F1EFE8; color: #444441; border: 1.5px solid #B4B2A9; }
+    .lb-row.bronze { background: #FAECE7; color: #4A1B0C; border: 1.5px solid #F0997B; }
+    .lb-score { font-size: 0.85rem; font-weight: 700; }
+    .medal { margin-right: 8px; }
+
+    .screen { display: none; animation: popIn 0.4s cubic-bezier(.34,1.56,.64,1); }
+    .screen.active { display: block; }
+    @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+  </style>
+</head>
+<body>
+<div class="card">
+
+  <!-- START -->
+  <div class="screen active" id="screen-start">
+    <div class="confetti-row">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+    <span class="big-emoji">🎀</span>
+    <div class="big-title">Who knows her best?</div>
+    <div class="subtitle">The ultimate birthday girl quiz!</div>
+    <br>
+    <input class="name-input" type="text" id="player-name" placeholder="Your name (e.g. Sarah)" maxlength="20" />
+    <br>
+    <button class="btn-primary" onclick="startQuiz()">Let's play! 🎉</button>
+  </div>
+
+  <!-- QUESTION -->
+  <div class="screen" id="screen-question">
+    <div class="progress-wrap">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <div class="q-label" id="q-label">Question 1 of 11</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="options-grid" id="options-grid"></div>
+    <div id="feedback-area" style="min-height:28px;"></div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="screen" id="screen-result">
+    <span class="big-emoji">🎉</span>
+    <div class="big-title" id="result-name">Amazing!</div>
+    <div class="result-inner">
+      <div class="score-label">Your score</div>
+      <div class="score-big" id="score-display">0/11</div>
+      <div class="title-badge" id="title-display">Birthday Bestie</div>
+      <div class="result-msg" id="result-msg"></div>
+    </div>
+    <button class="btn-primary" onclick="showLeaderboard()">See leaderboard 🏆</button>
+  </div>
+
+  <!-- LEADERBOARD -->
+  <div class="screen" id="screen-leaderboard">
+    <span class="big-emoji">🏆</span>
+    <div class="big-title">Leaderboard</div>
+    <div class="subtitle">Who knows her best?</div>
+    <div id="leaderboard-list" style="margin-bottom:1rem;"></div>
+    <button class="btn-outline" onclick="playAgain()">Play again 🎀</button>
+  </div>
+
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    q: "What's her go-to comfort food?",
+    options: ["mandi", "Grape leaves", "Ramen", "pizza"],
+    answer: 0
+  },
+  {
+    q: "How does she spend a perfect saturday?",
+    options: ["Netflix", "Brunch with friends", "Yoga", "Shopping trip"],
+    answer: 2
+  },
+  {
+    q: "What's her biggest pet peeve?",
+    options: ["Being late", "Slow WiFi", "Loud chewing", "Dumb people"],
+    answer: 3
+  },
+  {
+    q: "Which movie could she watch on repeat forever?",
+    options: ["Mean Girls", "Clueless", "Legally Blonde", "Monsters University"],
+    answer: 3
+  },
+  {
+    q: "What's her hidden talent?",
+    options: ["singing", "Incredible memory", "Swimming", "Secret chef"],
+    answer: 0
+  },
+  {
+    q: "Pick her ideal birthday gift!",
+    options: ["Spa day", "Concert tickets", "Book haul", "Fancy dinner"],
+    answer: 1
+  },
+  {
+    q: "How does she react when she's stressed?",
+    options: ["Gets very quiet", "Stress-cleans everything", "Loud voice (everyone knows)", "Eats a lot of snacks"],
+    answer: 2
+  },
+  {
+    q: "What's her favourite colour?",
+    options: ["Hot pink", "Emerald green", "Navy blue", "Lavender"],
+    answer: 2
+  },
+  {
+    q: "What's her biggest green flag?",
+    options: ["Always on time", "Sees the world as sunshine & rainbows", "Remembers every detail", "Hypes everyone up"],
+    answer: 1
+  },
+  {
+    q: "What's her most iconic red flag?",
+    options: ["Terrifying when angry", "Loud, freaking contagious laugh", "Zero filter", "Always running late"],
+    answer: 2
+  },
+  {
+    q: "What's her favourite dog? 😉",
+    options: ["Husky", "Poodle", "Labrador", "Golden Retriever"],
+    answer: 3
+  },
+  {
+    q: "Complete her famous quote: \"photo you - me know - ___ - 3 zinger\"",
+    options: ["photo you", "me know", "شكشن", "٣ زنجي لوسمحت "],
+    answer: 2
+  },
+  {
+    q: "Where did she first choke laughing?",
+    options: ["شغف", "الملاعب", " في 307", "lecture"],
+    answer: 1
+  },
+  {
+    q: "What did she say in room 307? 👀",
+    options: ["عايزة اعمل حمام مغريي", "ايففففف ايه الريحه دي", "الجو برد", "مين الحيوان دا"],
+    answer: 0
+  }
+];
+
+let currentQ = 0, score = 0, playerName = '', answered = false;
+let leaderboard = [];
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startQuiz() {
+  const n = document.getElementById('player-name').value.trim();
+  playerName = n || 'You';
+  currentQ = 0; score = 0; answered = false;
+  showScreen('screen-question');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = QUESTIONS[currentQ];
+  const total = QUESTIONS.length;
+  document.getElementById('q-label').textContent = `Question ${currentQ + 1} of ${total}`;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('progress-fill').style.width = `${(currentQ / total) * 100}%`;
+  document.getElementById('feedback-area').innerHTML = '';
+  const grid = document.getElementById('options-grid');
+  grid.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.onclick = () => selectAnswer(i);
+    grid.appendChild(btn);
+  });
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = QUESTIONS[currentQ];
+  document.querySelectorAll('.option-btn').forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.answer) btn.classList.add('correct');
+    else if (i === idx) btn.classList.add('wrong');
+  });
+  if (idx === q.answer) score++;
+  const tag = document.createElement('span');
+  tag.className = 'feedback-tag ' + (idx === q.answer ? 'feedback-correct' : 'feedback-wrong');
+  tag.textContent = idx === q.answer ? 'Correct! 🌟' : `Oops! It was "${q.options[q.answer]}"`;
+  document.getElementById('feedback-area').appendChild(tag);
+  setTimeout(() => {
+    currentQ++;
+    if (currentQ < QUESTIONS.length) renderQuestion();
+    else showResults();
+  }, 1600);
+}
+
+function showResults() {
+  leaderboard.push({ name: playerName, score });
+  leaderboard.sort((a, b) => b.score - a.score);
+  const total = QUESTIONS.length;
+  document.getElementById('result-name').textContent = playerName + '!';
+  document.getElementById('score-display').textContent = `${score}/${total}`;
+  let title, msg;
+  if (score === total)   { title = '🎀 Birthday Bestie';      msg = 'You basically ARE her — obsessed!'; }
+  else if (score >= 9)   { title = '✨ Super Fan';             msg = 'You really know your girl!'; }
+  else if (score >= 6)   { title = '💛 Pretty Good Friend';   msg = 'Not bad! Room to level up.'; }
+  else if (score >= 3)   { title = '🌸 Casual Acquaintance';  msg = 'More brunch dates needed...'; }
+  else                   { title = '👀 Total Stranger';        msg = 'Have you two actually met? 😅'; }
+  document.getElementById('title-display').textContent = title;
+  document.getElementById('result-msg').textContent = msg;
+  showScreen('screen-result');
+}
+
+function showLeaderboard() {
+  const list = document.getElementById('leaderboard-list');
+  list.innerHTML = '';
+  const medals = ['gold','silver','bronze'];
+  const symbols = ['🥇','🥈','🥉'];
+  leaderboard.forEach((entry, i) => {
+    const row = document.createElement('div');
+    row.className = 'lb-row ' + (medals[i] || '');
+    const m = i < 3 ? `<span class="medal">${symbols[i]}</span>` : `<span class="medal">${i+1}.</span>`;
+    row.innerHTML = `<span>${m}${entry.name}</span><span class="lb-score">${entry.score}/${QUESTIONS.length}</span>`;
+    list.appendChild(row);
+  });
+  showScreen('screen-leaderboard');
+}
+
+function playAgain() {
+  document.getElementById('player-name').value = '';
+  showScreen('screen-start');
+}
+</script>
+</body>
+</html>
